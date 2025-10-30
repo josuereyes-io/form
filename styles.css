@@ -89,7 +89,7 @@ textarea:focus {
   box-shadow: 0 0 0 2px rgba(245, 208, 0, 0.2);
 }
 
-/* Placeholder styling for both light and dark modes */
+/* Placeholder styling */
 input::placeholder,
 textarea::placeholder {
   color: #888;
@@ -143,4 +143,3 @@ button[type="submit"]:hover {
   background-color: var(--primary-color);
   color: #000;
 }
-
