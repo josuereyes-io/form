@@ -14,16 +14,16 @@
       script.src = 'https://assets.apollo.io/js/apollo-inbound.js?nocache=' + nocache;
       script.defer = true;
       script.onload = function () {
-        // Initialize with your own appId.
+        // Initialize form enrichment with your appId.
         window.ApolloInbound?.formEnrichment?.init({
           appId: '68e5d16e61846e00214fa17b'
-          // Apollo’s Hide known fields setting is controlled in the dashboard.
+          // Hiding of enriched fields is controlled in Apollo’s form settings.
         });
       };
       document.head.appendChild(script);
     })();
 
-    // Restore saved theme (light or dark) when page loads
+    // Restore saved theme when page loads
     document.addEventListener('DOMContentLoaded', () => {
       const savedTheme = localStorage.getItem('theme');
       if (savedTheme === 'dark') {
@@ -87,18 +87,17 @@
   </div>
 
   <script>
-    // Theme toggle logic with persistence
+    // Theme toggling with persistence
     function toggleTheme() {
       document.documentElement.classList.toggle('dark');
       const isDark = document.documentElement.classList.contains('dark');
       localStorage.setItem('theme', isDark ? 'dark' : 'light');
     }
 
-    // Submit handler: sends data to Apollo and optionally to your backend
+    // Form submission handler
     function submitToApollo(event) {
       event.preventDefault();
 
-      // Gather form data using the Apollo field identifiers
       const data = {
         email: document.querySelector('input[name="email"]').value,
         firstName: document.querySelector('input[name="firstName"]').value,
@@ -107,23 +106,21 @@
         employeeCount: document.querySelector('input[name="employeeCount"]').value
       };
 
-      // Send enriched data to Apollo
+      // Submit enriched data to Apollo
       if (window.ApolloInbound && typeof window.ApolloInbound.submitForm === 'function') {
         window.ApolloInbound.submitForm(data, {
           onSuccess: function () {
             console.log('Data sent to Apollo successfully.');
-            // You can add your own success logic here
           },
           onError: function (error) {
             console.error('Error sending data to Apollo:', error);
-            // Optional: add your own error handling here
           }
         });
       } else {
         console.error('ApolloInbound API not available. Check your appId and domain settings.');
       }
 
-      // Optional: send data to your backend if you use a local server
+      // Optional: forward to your own backend for local logging
       /*
       fetch('/submit', {
         method: 'POST',
