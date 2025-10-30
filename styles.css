@@ -1,0 +1,146 @@
+/* Light theme variables (default) */
+:root {
+  --primary-color: #F5D000;      /* Apollo-like yellow */
+  --background-color: #F7F5F2;   /* light neutral background */
+  --text-color: #1E1E1E;         /* dark text for readability */
+  --input-border: #DAD7D3;       /* subtle input borders */
+  --input-bg: #FFFFFF;           /* input background in light mode */
+  --box-bg: #FFFFFF;             /* form container background in light mode */
+}
+
+/* Dark theme overrides */
+.dark {
+  --primary-color: #F5D000;      /* same yellow accent */
+  --background-color: #1A1A1A;   /* dark background */
+  --text-color: #F0F0F0;         /* light text */
+  --input-border: #444444;       /* darker input borders */
+  --input-bg: #2A2A2A;           /* input background in dark mode */
+  --box-bg: #232323;             /* form container background in dark mode */
+}
+
+/* Base page styling */
+body {
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* vertical centering */
+  align-items: center;     /* horizontal centering */
+  min-height: 100vh;       /* full viewport height */
+  padding: 1rem;
+  margin: 0;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+/* Content wrapper */
+.content {
+  width: 100%;
+  max-width: 600px;
+}
+
+/* Headings and paragraphs */
+h1 {
+  color: var(--primary-color);
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+/* Form container with subtle border and rounded corners */
+.form-box {
+  background-color: var(--box-bg);
+  padding: 1.5rem;
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* Form labels */
+form label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+}
+
+/* Inputs, textareas and buttons share common styling */
+input[type="text"],
+input[type="email"],
+textarea,
+button {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid var(--input-border);
+  border-radius: 4px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  box-sizing: border-box;
+}
+
+/* Focus states for inputs and textareas */
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(245, 208, 0, 0.2);
+}
+
+/* Placeholder styling for both light and dark modes */
+input::placeholder,
+textarea::placeholder {
+  color: #888;
+}
+
+/* Allow textareas to grow vertically */
+textarea {
+  resize: vertical;
+}
+
+/* Submit button styling */
+button[type="submit"] {
+  background-color: var(--primary-color);
+  color: #000;
+  border: none;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+/* Hover state for submit button */
+button[type="submit"]:hover {
+  background-color: #D0B200; /* slightly darker yellow */
+}
+
+/* Theme toggle button styling */
+.theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 4px;
+  background-color: var(--primary-color);
+  color: #000;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 1000; /* ensure it stays above other content */
+}
+
+/* Optional hover effect for the toggle button */
+.theme-toggle:hover {
+  opacity: 0.8;
+}
+
+/* Dark mode toggle button variant (same colours here) */
+.dark .theme-toggle {
+  background-color: var(--primary-color);
+  color: #000;
+}
+
