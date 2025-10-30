@@ -1,27 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF‑8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact Enrichment Form</title>
   <link rel="stylesheet" href="styles.css">
 
-  <!-- Load Apollo inbound script and initialize form enrichment -->
+  <!-- Apollo form enrichment script -->
   <script>
-    (function () {
+    (function initApolloInbound() {
       var nocache = Math.random().toString(36).substring(7);
       var script = document.createElement('script');
       script.src = 'https://assets.apollo.io/js/apollo-inbound.js?nocache=' + nocache;
       script.defer = true;
       script.onload = function () {
+        // Initialize with your own appId.
         window.ApolloInbound?.formEnrichment?.init({
-          appId: '68e5d16e61846e00214fa17b' // replace with your actual appId
+          appId: '68e5d16e61846e00214fa17b'
+          // Apollo’s Hide known fields setting is controlled in the dashboard.
         });
       };
       document.head.appendChild(script);
     })();
 
-    // Restore the preferred theme (light or dark) from localStorage on load
+    // Restore saved theme (light or dark) when page loads
     document.addEventListener('DOMContentLoaded', () => {
       const savedTheme = localStorage.getItem('theme');
       if (savedTheme === 'dark') {
@@ -32,16 +34,14 @@
 </head>
 <body>
   <!-- Theme toggle button -->
-  <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" onclick="toggleTheme()">
-    🌓
-  </button>
+  <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" onclick="toggleTheme()">🌓</button>
 
   <!-- Centered content container -->
   <div class="content">
     <h1>Apollo Contact Form</h1>
     <p>Please fill out the form below.</p>
 
-    <!-- Contact form -->
+    <!-- Form container -->
     <div class="form-box">
       <form id="contact-form" name="contact" onsubmit="submitToApollo(event)">
         <p>
@@ -53,8 +53,15 @@
 
         <p>
           <label>
-            Name:<br>
-            <input type="text" name="name" />
+            First Name:<br>
+            <input type="text" name="firstName" />
+          </label>
+        </p>
+
+        <p>
+          <label>
+            Last Name:<br>
+            <input type="text" name="lastName" />
           </label>
         </p>
 
@@ -68,7 +75,7 @@
         <p>
           <label>
             Company Size:<br>
-            <input type="text" name="company_size" />
+            <input type="text" name="employeeCount" />
           </label>
         </p>
 
@@ -80,38 +87,54 @@
   </div>
 
   <script>
-    // Theme toggling logic
+    // Theme toggle logic with persistence
     function toggleTheme() {
       document.documentElement.classList.toggle('dark');
       const isDark = document.documentElement.classList.contains('dark');
       localStorage.setItem('theme', isDark ? 'dark' : 'light');
     }
 
-    // Submit form data to Apollo
+    // Submit handler: sends data to Apollo and optionally to your backend
     function submitToApollo(event) {
       event.preventDefault();
 
-      // Collect data from the form inputs
+      // Gather form data using the Apollo field identifiers
       const data = {
         email: document.querySelector('input[name="email"]').value,
-        name: document.querySelector('input[name="name"]').value,
+        firstName: document.querySelector('input[name="firstName"]').value,
+        lastName: document.querySelector('input[name="lastName"]').value,
         company: document.querySelector('input[name="company"]').value,
-        company_size: document.querySelector('input[name="company_size"]').value
+        employeeCount: document.querySelector('input[name="employeeCount"]').value
       };
 
-      // Use ApolloInbound's submitForm API to send data to Apollo
-      window.ApolloInbound?.submitForm(data, {
-        onSuccess: function () {
-          console.log('Submission sent to Apollo successfully.');
-          // Optional: add custom success logic here
-        },
-        onError: function (error) {
-          console.error('Error sending submission to Apollo:', error);
-          // Optional: add custom error handling here
-        }
-      });
+      // Send enriched data to Apollo
+      if (window.ApolloInbound && typeof window.ApolloInbound.submitForm === 'function') {
+        window.ApolloInbound.submitForm(data, {
+          onSuccess: function () {
+            console.log('Data sent to Apollo successfully.');
+            // You can add your own success logic here
+          },
+          onError: function (error) {
+            console.error('Error sending data to Apollo:', error);
+            // Optional: add your own error handling here
+          }
+        });
+      } else {
+        console.error('ApolloInbound API not available. Check your appId and domain settings.');
+      }
+
+      // Optional: send data to your backend if you use a local server
+      /*
+      fetch('/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+      .then(res => res.text())
+      .then(msg => console.log(msg))
+      .catch(err => console.error('Error saving submission:', err));
+      */
     }
   </script>
 </body>
 </html>
-
